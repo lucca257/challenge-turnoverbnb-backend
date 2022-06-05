@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Domains\Deposits\Models\Deposit;
+use App\Domains\Images\Models\Image;
 use App\Domains\Transaction\Models\Transaction;
 use App\Domains\Users\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -24,7 +25,7 @@ class DepositFactory extends Factory
         $status = Arr::random(["pending", "confirmed", "rejected"]);
         return [
             "user_id" => $this->faker->randomElement(User::all()),
-//            "image_id" => $this->faker->randomElement(User::all()),
+            "image_id" => $this->faker->randomElement(Image::all()),
             "transaction_id" => $this->faker->randomElement(Transaction::all()),
             "status" => $status,
             "description" => $this->faker->title,

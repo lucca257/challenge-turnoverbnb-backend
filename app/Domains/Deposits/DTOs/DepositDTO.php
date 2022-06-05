@@ -2,7 +2,6 @@
 
 namespace App\Domains\Deposits\DTOs;
 
-use App\Domains\Deposits\Enums\DepositStatusEnum;
 use Illuminate\Http\UploadedFile;
 
 class DepositDTO

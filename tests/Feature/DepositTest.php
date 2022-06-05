@@ -3,6 +3,8 @@
 namespace Tests\Feature;
 
 use App\Domains\Deposits\Models\Deposit;
+use App\Domains\Images\Actions\CreateImageAction;
+use App\Domains\Images\Models\Image;
 use App\Domains\Transaction\Models\Transaction;
 use App\Domains\Users\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -20,6 +22,24 @@ class DepositTest extends TestCase
         parent::setUp();
 
         $this->base_route = 'api/customer/deposits/';
+    }
+
+    private function mockImage(string $user_id): void
+    {
+        $this->mock(CreateImageAction::class, function ($mock) {
+            $imageMock = Image::factory()->create();
+            $mock->shouldReceive('execute')
+                ->andReturn($imageMock);
+        });
+        app(CreateImageAction::class)->execute(UploadedFile::fake()->image('test.jpg'), $user_id);
+    }
+
+    private function mockUser(){
+        $user = User::factory()
+            ->has(Transaction::factory()->count(2))
+            ->create();
+        $this->actingAs($user);
+        return $user;
     }
     /**
      * A basic test example.
@@ -48,18 +68,14 @@ class DepositTest extends TestCase
 
     public function test_should_list_all_deposits(): void
     {
-        $user = User::factory()
-            ->has(Transaction::factory()->count(2))
-            ->create();
-        $this->actingAs($user);
-
+        $user = $this->mockUser();
         $user->transactions->each(function ($transaction) {
-           Deposit::factory()->create([
-               'user_id' => $transaction->user_id,
-               'transaction_id' => $transaction->id
-           ]);
+            Deposit::factory()->create([
+                'user_id' => $transaction->user_id,
+                'transaction_id' => $transaction->id,
+                'image_id' => Image::factory()->create()->first()->id
+            ]);
         });
-
         $response = $this->post($this->base_route . "list", [
             'year' => date('Y'),
             'month' => date('m'),
@@ -70,21 +86,20 @@ class DepositTest extends TestCase
 
     public function test_should_list_all_deposits_filtered_by_status(): void
     {
-        $user = User::factory()
-            ->has(Transaction::factory()->count(2))
-            ->create();
-        $this->actingAs($user);
+        $user = $this->mockUser();
 
         $user->transactions->each(function ($transaction) {
             Deposit::factory()->statusRejected()->create([
                 'user_id' => $transaction->user_id,
                 'transaction_id' => $transaction->id,
+                'image_id' => Image::factory()->create()->first()->id
             ]);
         });
 
         Deposit::factory()->statusPending()->create([
             'user_id' => $user->transactions->first->user_id,
             'transaction_id' => $user->transactions->first->id,
+            'image_id' => Image::factory()->create()->first()->id
         ]);
 
         $response = $this->post($this->base_route . "list", [
@@ -100,15 +115,12 @@ class DepositTest extends TestCase
 
     public function test_should_detail_deposit(): void
     {
-        $user = User::factory()
-            ->has(Transaction::factory()->count(1))
-            ->create();
-        $this->actingAs($user);
-
+        $user = $this->mockUser();
         $user->transactions->each(function ($transaction) {
             Deposit::factory()->create([
                 'user_id' => $transaction->user_id,
-                'transaction_id' => $transaction->id
+                'transaction_id' => $transaction->id,
+                'image_id' => Image::factory()->create()->first()->id
             ]);
         });
         $response = $this->get($this->base_route . $user->transactions->first()->id);
@@ -117,8 +129,7 @@ class DepositTest extends TestCase
 
     public function test_field_amount_is_required_on_create_deposit()
     {
-        $user = User::factory()->create();
-        $this->actingAs($user);
+        $this->mockUser();
         $response = $this->post($this->base_route, [
             "description" => "test",
             "image" => UploadedFile::fake()->image('test.jpg')
@@ -130,8 +141,7 @@ class DepositTest extends TestCase
 
     public function test_field_desciption_is_required_on_create_deposit()
     {
-        $user = User::factory()->create();
-        $this->actingAs($user);
+        $this->mockUser();
         $response = $this->post($this->base_route, [
             "amount" => random_int(1, 99999),
             "image" => UploadedFile::fake()->image('test.jpg')
@@ -143,19 +153,34 @@ class DepositTest extends TestCase
 
     public function test_field_image_is_required_on_create_deposit()
     {
-        $user = User::factory()->create();
-        $this->actingAs($user);
+        $user = $this->mockUser();
+        $this->mockImage($user->id);
         $response = $this->post($this->base_route, [
             "amount" => random_int(1, 99999),
             "description" => "test",
         ]);
-        $response->assertStatus(422);
+        $response->assertStatus(422)->assertJson([
+            "image" => ["The image field is required."]
+        ]);
     }
 
     public function test_should_create_a_deposit()
     {
-        $user = User::factory()->create();
-        $this->actingAs($user);
+        $user = $this->mockUser();
+        $this->mockImage($user->id);
+        $mock_data = [
+            "amount" => random_int(1, 99999),
+            "description" => "test",
+            "image" => UploadedFile::fake()->image('test.jpg')
+        ];
+        $response = $this->post($this->base_route, $mock_data);
+        $response->assertStatus(200)->assertJsonFragment($mock_data);
+    }
+
+    public function test_on_create_a_deposit_create_image()
+    {
+        $user = $this->mockUser();
+        $this->mockImage($user->id);
         $mock_data = [
             "amount" => random_int(1, 99999),
             "description" => "test",

@@ -22,7 +22,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained();
             $table->foreignId('reviewed_by')->nullable()->constrained('users');
             $table->foreignId('transaction_id')->nullable()->constrained();
-//            $table->foreignId('image_id')->constrained();
+            $table->foreignId('image_id')->constrained();
             $table->timestamps();
         });
     }
