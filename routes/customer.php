@@ -9,6 +9,7 @@ Route::controller(TransactionController::class)->prefix('transactions')->group(f
 });
 
 Route::controller(DepositController::class)->prefix('deposits')->group(function () {
-    Route::any('', 'index');
-    Route::any('{deposit_id}', 'show');
+    Route::any('list', 'index');
+    Route::get('{deposit_id}', 'show');
+    Route::post('', 'store');
 });

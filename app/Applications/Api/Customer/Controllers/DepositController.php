@@ -3,6 +3,7 @@
 namespace App\Applications\Api\Customer\Controllers;
 
 use App\Applications\Api\Customer\Validators\Deposits\ListDepositsValidator;
+use App\Applications\Api\Customer\Validators\Deposits\StoreDepositsValidator;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
@@ -25,7 +26,7 @@ class DepositController extends Controller
         return response()->json($deposit);
     }
 
-    public function store(){
-
+    public function store(StoreDepositsValidator $validator){
+        dd($validator->toDTO());
     }
 }
