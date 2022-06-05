@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Applications\Api\Customer\Validators;
+namespace App\Applications\Api\Customer\Validators\Deposits;
 
 use App\Domains\Transaction\DTOs\FilterTransactionDTO;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class ListTransactionValidator extends FormRequest
+class ListDepositsValidator extends FormRequest
 {
     /**
      * Disable validator redirect back to use in API
@@ -33,9 +33,6 @@ class ListTransactionValidator extends FormRequest
 
     public function toDTO(): FilterTransactionDTO
     {
-        return new FilterTransactionDTO(
-            $this->input("year"),
-            $this->input("month")
-        );
+        return new FilterTransactionDTO(...$this->validated());
     }
 }

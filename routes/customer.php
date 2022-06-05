@@ -8,3 +8,6 @@ Route::controller(TransactionController::class)->prefix('transactions')->group(f
     Route::any('', 'index');
 });
 
+Route::controller(DepositController::class)->prefix('deposits')->group(function () {
+    Route::any('', 'index');
+});
