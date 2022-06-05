@@ -2,6 +2,7 @@
 
 namespace App\Applications\Api\Customer\Controllers;
 
+use App\Applications\Api\Customer\Validators\ListTransactionValidator;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -13,9 +14,9 @@ class TransactionController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function index(Request $request): JsonResponse
+    public function index(ListTransactionValidator $request): JsonResponse
     {
-        $user_transactions = Auth::user()->transactions;
+        $user_transactions = Auth::user()->transactions()->findByFilters($request->toDTO())->get();
         return response()->json($user_transactions);
     }
 }
