@@ -21,7 +21,7 @@ class DepositController extends Controller
 
     public function show(int $deposit_id): JsonResponse
     {
-        $deposits = Auth::user()->deposits()->find($deposit_id);
-        return response()->json($deposits);
+        $deposit = Auth::user()->with('deposits')->find($deposit_id);
+        return response()->json($deposit);
     }
 }
