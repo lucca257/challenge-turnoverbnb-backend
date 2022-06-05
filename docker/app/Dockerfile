@@ -12,13 +12,12 @@ COPY --chown=1000:www-data ./ .
 
 RUN rm -rf html && ln -s public html
 
-#RUN composer install \
-#    && chown -R 1000:www-data vendor
-#
-
-RUN php artisan serve --host=0.0.0.0 --port=80
+RUN composer install \
+    && chown -R 1000:www-data vendor
 
 RUN chmod -R 777 /var/www/storage
 
 EXPOSE 9000
+
+CMD php-fpm
 

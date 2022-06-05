@@ -15,10 +15,9 @@ services:
       restart: always
       tty: true
       ports:
-        - "8000:80"
-#      volumes:
-#        - ./:/var/www
-#        - ./docker/web:/etc/nginx/conf.d/
+        - "81:80"
+      volumes:
+        - ./:/var/www
       depends_on:
         - app
     db:
