@@ -2,6 +2,7 @@
 
 namespace App\Applications\Api\Customer\Validators\Transactions;
 
+
 use App\Domains\Transaction\DTOs\FilterTransactionDTO;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;

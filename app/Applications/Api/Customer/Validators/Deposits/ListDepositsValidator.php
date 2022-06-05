@@ -2,8 +2,8 @@
 
 namespace App\Applications\Api\Customer\Validators\Deposits;
 
+use App\Domains\Deposits\DTOs\ListDepositsDTO;
 use App\Domains\Deposits\Enums\DepositStatusEnum;
-use App\Domains\Transaction\DTOs\FilterTransactionDTO;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -33,17 +33,17 @@ class ListDepositsValidator extends FormRequest
         ];
     }
 
-    public function toDTO(): FilterTransactionDTO
+    public function toDTO(): ListDepositsDTO
     {
-        $filter_dto = new FilterTransactionDTO(
+        $filter_dto = new ListDepositsDTO(
             $this->input('year'),
             $this->input('month'),
         );
 
         if ($this->has('status')) {
             $filter_dto->status = DepositStatusEnum::from($this->input("status"));
+//            dd($filter_dto);
         }
-
         return $filter_dto;
     }
 }
