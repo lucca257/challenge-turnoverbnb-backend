@@ -17,12 +17,13 @@ return new class extends Migration
             $table->id();
             $table->string('description');
             $table->float('amount');
-            $table->boolean('is_confirmed')->default(false)->index();
+            $table->string('status')->default('pending')->index();
             $table->text("rejection_reason")->nullable();
             $table->foreignId('user_id')->constrained();
             $table->foreignId('reviewed_by')->nullable()->constrained('users');
             $table->foreignId('transaction_id')->constrained();
-            $table->foreignId('image_id')->constrained();
+//            $table->foreignId('image_id')->constrained();
+            $table->timestamps();
         });
     }
 

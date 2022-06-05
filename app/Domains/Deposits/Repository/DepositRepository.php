@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Domains\Transaction\Repository;
+namespace App\Domains\Deposits\Repository;
 
 use App\Domains\Transaction\DTOs\FilterTransactionDTO;
 use Illuminate\Database\Eloquent\Builder;
 
-class TransactionRepository extends Builder
+class DepositRepository extends Builder
 {
     public function findByFilters(FilterTransactionDTO $filter): Self
     {
