@@ -26,4 +26,22 @@ class TransactionFactory extends Factory
             "amount" => $this->faker->randomFloat(2, 0, 100),
         ];
     }
+
+    public function incomes()
+    {
+        return $this->state(function () {
+            return [
+                'type' => 'income',
+            ];
+        });
+    }
+
+    public function expenses()
+    {
+        return $this->state(function () {
+            return [
+                'type' => 'expense',
+            ];
+        });
+    }
 }

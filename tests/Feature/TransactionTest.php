@@ -48,7 +48,24 @@ class TransactionTest extends TestCase
 
         $response = $this->post($this->base_route, [
             'year' => date('Y'),
-            'month' => date('m')
+            'month' => date('m'),
+        ]);
+        $response->assertStatus(200);
+        $this->assertCount(2, $response->json());
+    }
+
+    public function test_should_filter_transactions_by_type(): void
+    {
+        $user = User::factory()
+            ->has(Transaction::factory()->count(2)->expenses())
+            ->has(Transaction::factory()->count(2)->incomes())
+            ->create();
+        $this->actingAs($user);
+
+        $response = $this->post($this->base_route, [
+            'year' => date('Y'),
+            'month' => date('m'),
+            'type' => 'income'
         ]);
         $response->assertStatus(200);
         $this->assertCount(2, $response->json());
