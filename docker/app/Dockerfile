@@ -19,5 +19,5 @@ RUN chmod -R 777 /var/www/storage
 
 EXPOSE 9000
 
-CMD php-fpm
+CMD ./docker/app/entrypoint.sh
 

@@ -1,11 +1,9 @@
 #!/bin/bash
-
-
-echo "***** SETTING ENV *****"
+echo "***** SETTING UP ENV *****"
 cp .env.example .env
 php artisan key:generate
 
-#echo "*****RUNNING MIGRATION *****"
-#php artisan migrate
+echo "***** RUNNING MIGRATIONS *****"
+php artisan migrate
 
 php-fpm

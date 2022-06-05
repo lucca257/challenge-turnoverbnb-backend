@@ -1,6 +1,7 @@
 version: '3'
 services:
     app:
+        container_name: backend
         build:
           context: ./
           dockerfile: docker/app/Dockerfile
@@ -8,7 +9,11 @@ services:
         restart: always
         volumes:
             - ./:/var/www/
+        depends_on:
+          - db
     web:
+      container_name: nginx
+      hostname: bnbbank.localhost
       build:
         context: ./
         dockerfile: docker/web/Dockerfile
@@ -21,6 +26,7 @@ services:
       depends_on:
         - app
     db:
+      container_name: mysql
       build:
         context: ./
         dockerfile: docker/db/Dockerfile
@@ -29,6 +35,6 @@ services:
       volumes:
            - ./docker/db/dbdata:/var/lib/mysql
       environment:
-          - MYSQL_DATABASE=turnover
+          - MYSQL_DATABASE=bnbbank
           - MYSQL_ROOT_PASSWORD=root
 
