@@ -6,6 +6,7 @@ use App\Domains\Deposits\Models\Deposit;
 use App\Domains\Transaction\Models\Transaction;
 use App\Domains\Users\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
 
 class DepositTest extends TestCase
@@ -26,7 +27,7 @@ class DepositTest extends TestCase
      * @return void
      */
     public function test_field_year_should_be_required_on_list_deposits(){
-        $response = $this->post($this->base_route, [
+        $response = $this->post($this->base_route . "list", [
             'month' => date('m'),
         ]);
         $response->assertStatus(422)
@@ -36,7 +37,7 @@ class DepositTest extends TestCase
     }
 
     public function test_field_month_should_be_required_on_list_deposits(){
-        $response = $this->get($this->base_route, [
+        $response = $this->get($this->base_route . "list", [
             'year' => date('Y')
         ]);
         $response->assertStatus(422)
@@ -59,7 +60,7 @@ class DepositTest extends TestCase
            ]);
         });
 
-        $response = $this->post($this->base_route, [
+        $response = $this->post($this->base_route . "list", [
             'year' => date('Y'),
             'month' => date('m'),
         ]);
@@ -86,7 +87,7 @@ class DepositTest extends TestCase
             'transaction_id' => $user->transactions->first->id,
         ]);
 
-        $response = $this->post($this->base_route, [
+        $response = $this->post($this->base_route . "list", [
             'year' => date('Y'),
             'month' => date('m'),
             "status" => "pending"
@@ -112,5 +113,17 @@ class DepositTest extends TestCase
         });
         $response = $this->get($this->base_route . $user->transactions->first()->id);
         $response->assertStatus(200)->assertJsonFragment($user->deposits->first()->toArray());
+    }
+
+    public function test_field_amount_is_required_on_create_deposit()
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+        $response = $this->post($this->base_route, [
+//            "amount" => random_float(1, 99999),
+            "description" => "test",
+            "image" => UploadedFile::fake()->image('test.jpg')
+        ]);
+        $response->assertStatus(422);
     }
 }
