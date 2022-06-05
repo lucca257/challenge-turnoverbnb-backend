@@ -2,7 +2,8 @@
 
 namespace App\Applications\Api\Customer\Controllers;
 
-use App\Applications\Api\Customer\Validators\ListTransactionValidator;
+
+use App\Applications\Api\Customer\Validators\Transactions\ListTransactionValidator;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;

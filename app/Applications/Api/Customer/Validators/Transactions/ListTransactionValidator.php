@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Applications\Api\Customer\Validators;
+namespace App\Applications\Api\Customer\Validators\Transactions;
 
 use App\Domains\Transaction\DTOs\FilterTransactionDTO;
 use Illuminate\Contracts\Validation\Validator;
