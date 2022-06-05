@@ -151,4 +151,17 @@ class DepositTest extends TestCase
         ]);
         $response->assertStatus(422);
     }
+
+    public function test_should_create_a_deposit()
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+        $mock_data = [
+            "amount" => random_int(1, 99999),
+            "description" => "test",
+            "image" => UploadedFile::fake()->image('test.jpg')
+        ];
+        $response = $this->post($this->base_route, $mock_data);
+        $response->assertStatus(200)->assertJsonFragment($mock_data);
+    }
 }
