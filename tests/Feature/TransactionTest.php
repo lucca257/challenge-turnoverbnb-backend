@@ -19,7 +19,7 @@ class TransactionTest extends TestCase
         $this->base_route = 'api/customer/transactions/';
     }
 
-    public function test_field_year_should_be_required_on_list(){
+    public function test_field_year_should_be_required_on_list_transactions(){
         $response = $this->get($this->base_route, [
             'month' => '1'
         ]);
