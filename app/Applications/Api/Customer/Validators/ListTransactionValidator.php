@@ -27,7 +27,8 @@ class ListTransactionValidator extends FormRequest
     {
         return [
             'year' => 'required|digits:4|integer|min:1900|max:'.(date('Y')+1),
-            "month" => "required|between:1,12"
+            "month" => "required|between:1,12",
+            "type" => "nullable|in:income,expense"
         ];
     }
 
@@ -35,7 +36,8 @@ class ListTransactionValidator extends FormRequest
     {
         return new FilterTransactionDTO(
             $this->input("year"),
-            $this->input("month")
+            $this->input("month"),
+            $this->input("type")
         );
     }
 }

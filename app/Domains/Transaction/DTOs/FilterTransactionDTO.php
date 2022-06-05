@@ -7,6 +7,6 @@ class FilterTransactionDTO
     public function __construct(
         public int $year,
         public int $month,
-//        public string $type
+        public ?string $type
     ) {}
 }
