@@ -21,9 +21,7 @@ class CreateDepositAction
                 "user_id" => $depositDTO->user_id,
                 "status" => DepositStatusEnum::PENDING->value,
                 "image_id" => $image->id
-            ]);
+            ])->load('images');
         });
     }
-
-
 }

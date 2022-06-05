@@ -1,6 +1,7 @@
 <?php
 
 use App\Applications\Api\Customer\Controllers\DepositController;
+use App\Applications\Api\Customer\Controllers\ImageController;
 use App\Applications\Api\Customer\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
 
@@ -12,4 +13,8 @@ Route::controller(DepositController::class)->prefix('deposits')->group(function 
     Route::any('list', 'index');
     Route::get('{deposit_id}', 'show');
     Route::post('', 'store');
+});
+
+Route::controller(ImageController::class)->prefix('image')->group(function () {
+    Route::get('{id}', 'show');
 });
