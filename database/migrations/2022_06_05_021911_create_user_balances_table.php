@@ -16,9 +16,9 @@ return new class extends Migration
         Schema::create('user_balances', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
-            $table->float('current_balance');
-            $table->float('total_incomes');
-            $table->float('total_expenses');
+            $table->float('current_balance')->default(0);
+            $table->float('total_incomes')->default(0);
+            $table->float('total_expenses')->default(0);
             $table->timestamps();
         });
     }
