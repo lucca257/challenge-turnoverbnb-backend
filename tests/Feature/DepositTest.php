@@ -120,9 +120,34 @@ class DepositTest extends TestCase
         $user = User::factory()->create();
         $this->actingAs($user);
         $response = $this->post($this->base_route, [
-//            "amount" => random_float(1, 99999),
             "description" => "test",
             "image" => UploadedFile::fake()->image('test.jpg')
+        ]);
+        $response->assertStatus(422)->assertJson([
+            "amount" => ["The amount field is required."]
+        ]);
+    }
+
+    public function test_field_desciption_is_required_on_create_deposit()
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+        $response = $this->post($this->base_route, [
+            "amount" => random_int(1, 99999),
+            "image" => UploadedFile::fake()->image('test.jpg')
+        ]);
+        $response->assertStatus(422)->assertJson([
+            "description" => ["The description field is required."]
+        ]);
+    }
+
+    public function test_field_image_is_required_on_create_deposit()
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+        $response = $this->post($this->base_route, [
+            "amount" => random_int(1, 99999),
+            "description" => "test",
         ]);
         $response->assertStatus(422);
     }
