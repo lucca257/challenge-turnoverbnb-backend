@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Deposit extends Model
 {
+    protected $hidden = ['created_at', 'updated_at'];
     protected $table = 'deposits';
     use HasFactory;
 

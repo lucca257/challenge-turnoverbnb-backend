@@ -18,4 +18,10 @@ class DepositController extends Controller
         $user_deposits = Auth::user()->deposits()->findByFilters($request->toDTO())->get();
         return response()->json($user_deposits);
     }
+
+    public function show(int $deposit_id): JsonResponse
+    {
+        $deposits = Auth::user()->deposits()->find($deposit_id);
+        return response()->json($deposits);
+    }
 }

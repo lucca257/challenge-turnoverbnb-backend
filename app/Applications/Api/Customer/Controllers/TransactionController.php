@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 class TransactionController extends Controller
 {
     /**
-     * @param Request $request
+     * @param ListTransactionValidator $request
      * @return JsonResponse
      */
     public function index(ListTransactionValidator $request): JsonResponse

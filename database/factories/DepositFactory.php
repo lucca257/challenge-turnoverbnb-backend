@@ -29,7 +29,8 @@ class DepositFactory extends Factory
             "status" => $status,
             "description" => $this->faker->title,
             "amount" => $this->faker->randomFloat(2, 0, 100),
-//            "rejected_reason" => $this->faker->sentence,
+            "rejection_reason" => "mock text",
+            "reviewed_by" => $this->faker->randomElement(User::all()),
         ];
     }
 

@@ -96,4 +96,21 @@ class DepositTest extends TestCase
         ]);
         $this->assertCount(1, $response->json());
     }
+
+    public function test_should_detail_deposit(): void
+    {
+        $user = User::factory()
+            ->has(Transaction::factory()->count(1))
+            ->create();
+        $this->actingAs($user);
+
+        $user->transactions->each(function ($transaction) {
+            Deposit::factory()->create([
+                'user_id' => $transaction->user_id,
+                'transaction_id' => $transaction->id
+            ]);
+        });
+        $response = $this->get($this->base_route . $user->transactions->first()->id);
+        $response->assertStatus(200)->assertJsonFragment($user->deposits->first()->toArray());
+    }
 }
