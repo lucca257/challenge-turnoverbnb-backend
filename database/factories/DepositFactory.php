@@ -34,11 +34,11 @@ class DepositFactory extends Factory
     }
 
     /**
-     * @return array<string, mixed>
+     * @return DepositFactory
      */
-    public function statusPending(): array
+    public function statusPending() : Self
     {
-        return $this->state(function () {
+        return $this->state(function (array $attributes) {
             return [
                 "status" => "pending",
             ];
@@ -46,11 +46,11 @@ class DepositFactory extends Factory
     }
 
     /**
-     * @return array<string, mixed>
+     * @return DepositFactory
      */
-    public function statusConfirmed(): array
+    public function statusConfirmed() : Self
     {
-        return $this->state(function () {
+        return $this->state(function (array $attributes) {
             return [
                 "status" => "confirmed",
             ];
@@ -58,11 +58,11 @@ class DepositFactory extends Factory
     }
 
     /**
-     * @return array<string, mixed>
+     * @return DepositFactory
      */
-    public function statusRejected(): array
+    public function statusRejected() : Self
     {
-        return $this->state(function () {
+        return $this->state(function (array $attributes) {
             return [
                 "status" => "rejected",
             ];

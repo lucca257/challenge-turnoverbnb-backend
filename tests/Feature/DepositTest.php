@@ -45,7 +45,7 @@ class DepositTest extends TestCase
             ]);
     }
 
-    public function test_should_list_all_transactions(): void
+    public function test_should_list_all_deposits(): void
     {
         $user = User::factory()
             ->has(Transaction::factory()->count(2))
@@ -65,5 +65,35 @@ class DepositTest extends TestCase
         ]);
         $response->assertStatus(200);
         $this->assertCount(2, $response->json());
+    }
+
+    public function test_should_list_all_deposits_filtered_by_status(): void
+    {
+        $user = User::factory()
+            ->has(Transaction::factory()->count(2))
+            ->create();
+        $this->actingAs($user);
+
+        $user->transactions->each(function ($transaction) {
+            Deposit::factory()->statusRejected()->create([
+                'user_id' => $transaction->user_id,
+                'transaction_id' => $transaction->id,
+            ]);
+        });
+
+        Deposit::factory()->statusPending()->create([
+            'user_id' => $user->transactions->first->user_id,
+            'transaction_id' => $user->transactions->first->id,
+        ]);
+
+        $response = $this->post($this->base_route, [
+            'year' => date('Y'),
+            'month' => date('m'),
+            "status" => "pending"
+        ]);
+        $response->assertStatus(200)->assertJsonFragment([
+            "status" => "pending"
+        ]);
+        $this->assertCount(1, $response->json());
     }
 }

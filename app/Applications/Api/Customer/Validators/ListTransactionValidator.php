@@ -33,9 +33,6 @@ class ListTransactionValidator extends FormRequest
 
     public function toDTO(): FilterTransactionDTO
     {
-        return new FilterTransactionDTO(
-            $this->input("year"),
-            $this->input("month")
-        );
+        return new FilterTransactionDTO(...$this->validated());
     }
 }

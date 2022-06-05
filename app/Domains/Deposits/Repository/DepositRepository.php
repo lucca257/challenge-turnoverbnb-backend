@@ -11,6 +11,9 @@ class DepositRepository extends Builder
     {
         return $this->whereYear('created_at', $filter->year)
             ->whereMonth('created_at', $filter->month)
+            ->when($filter->status, function ($query) use ($filter) {
+                return $query->where('status', $filter->status);
+            })
             ->orderBy('created_at', 'desc');
     }
 }
