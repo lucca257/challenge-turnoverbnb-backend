@@ -11,9 +11,6 @@ class TransactionRepository extends Builder
     {
         return $this->whereYear('created_at', $filter->year)
             ->whereMonth('created_at', $filter->month)
-            ->when($filter->type, function (Self $query) use ($filter) {
-                return $query->where('type', $filter->type);
-            })
             ->orderBy('created_at', 'desc');
     }
 }

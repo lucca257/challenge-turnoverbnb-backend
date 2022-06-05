@@ -36,8 +36,7 @@ class ListTransactionValidator extends FormRequest
     {
         return new FilterTransactionDTO(
             $this->input("year"),
-            $this->input("month"),
-            $this->input("type")
+            $this->input("month")
         );
     }
 }
