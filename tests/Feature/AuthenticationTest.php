@@ -69,6 +69,22 @@ class AuthenticationTest extends TestCase
         ]);
     }
 
+    public function test_should_register_new_user_with_balance(){
+        $mock_data = [
+            "username" => "mockusername",
+            "email" => "mockmail@gmail.com",
+            "password" => "mock_password"
+        ];
+        $response = $this->post($this->base_route . "register", $mock_data);
+        $response->assertStatus(200);
+        $this->assertDatabaseHas('user_balances', [
+            "user_id" => 1,
+            "current_balance" => 0,
+            "total_incomes" => 0,
+            "total_expenses" => 0,
+        ]);
+    }
+
     public function test_should_login_user(){
         $mock_data = [
             "username" => "mockusername",
