@@ -101,7 +101,6 @@ class PurchaseTestTest extends TestCase
             ]);
     }
 
-
     public function test_should_create_new_purchase(): void
     {
         $mock_data = [
@@ -116,6 +115,24 @@ class PurchaseTestTest extends TestCase
         $this->assertDatabaseHas('purchases', [
             "user_id" => $user->id,
             ...$mock_data
+        ]);
+    }
+
+    public function test_should_create_new_transaction_on_post_to_create_new_purchase(): void
+    {
+        $mock_data = [
+            'amount' => '100',
+            'description' => 'Test',
+            'purchase_at' => date('Y-m-d'),
+        ];
+        $user = User::factory()->create();
+        $this->actingAs($user);
+        $response = $this->post($this->base_route,$mock_data);
+        $response->assertStatus(200);
+        $this->assertDatabaseHas('transactions', [
+            "user_id" => $user->id,
+            'amount' => '100',
+            'description' => 'Test',
         ]);
     }
 }
