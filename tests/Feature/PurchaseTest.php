@@ -55,4 +55,50 @@ class PurchaseTestTest extends TestCase
         $response->assertStatus(200);
         $this->assertCount(2, $response->json());
     }
+
+    public function test_field_amount_is_required_on_create_purchase(): void
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+        $response = $this->post($this->base_route,[
+            //'amount' => '100',
+            'description' => 'Test',
+            'purchase_at' => date('Y-m-d'),
+        ]);
+        $response->assertStatus(422)
+            ->assertJson([
+                "amount" => ["The amount field is required."],
+            ]);
+
+    }
+
+    public function test_field_desciption_is_required_on_create_purchase(): void
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+        $response = $this->post($this->base_route,[
+            'amount' => '100',
+            'purchase_at' => date('Y-m-d'),
+        ]);
+        $response->assertStatus(422)
+            ->assertJson([
+                "description" => ["The description field is required."],
+            ]);
+
+    }
+
+    public function test_field_purchase_at_is_required_on_create_purchase(): void
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+        $response = $this->post($this->base_route,[
+            'amount' => '100',
+            'description' => 'Test',
+        ]);
+        $response->assertStatus(422)
+            ->assertJson([
+                "purchase_at" => ["The purchase at field is required."],
+            ]);
+
+    }
 }
