@@ -99,6 +99,23 @@ class PurchaseTestTest extends TestCase
             ->assertJson([
                 "purchase_at" => ["The purchase at field is required."],
             ]);
+    }
 
+
+    public function test_should_create_new_purchase(): void
+    {
+        $mock_data = [
+            'amount' => '100',
+            'description' => 'Test',
+            'purchase_at' => date('Y-m-d'),
+        ];
+        $user = User::factory()->create();
+        $this->actingAs($user);
+        $response = $this->post($this->base_route,$mock_data);
+        $response->assertStatus(200);
+        $this->assertDatabaseHas('purchases', [
+            "user_id" => $user->id,
+            ...$mock_data
+        ]);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Applications\Api\Customer\Validators\Purchases;
 
-use App\Domains\Purchases\DTOs\FilterPurchasesDTO;
+use App\Domains\Purchases\DTOs\PurchaseDTO;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -32,8 +32,8 @@ class StorePurchasesValidator extends FormRequest
         ];
     }
 
-    public function toDTO(): FilterPurchasesDTO
+    public function toDTO() : PurchaseDTO
     {
-        return new FilterPurchasesDTO(["user_id" => Auth::user()->id], ...$this->validated());
+        return new PurchaseDTO(Auth::user()->id, ...$this->validated());
     }
 }

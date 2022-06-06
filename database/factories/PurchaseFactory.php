@@ -25,6 +25,7 @@ class PurchaseFactory extends Factory
             "transaction_id" => $this->faker->randomElement(Transaction::all()),
             "description" => $this->faker->title,
             "amount" => $this->faker->randomFloat(2, 0, 100),
+            "purchase_at" => $this->faker->dateTime(),
         ];
     }
 }

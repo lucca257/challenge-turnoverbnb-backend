@@ -2,7 +2,7 @@
 
 namespace App\Domains\Purchases\DTOs;
 
-class PurchasesDTO
+class PurchaseDTO
 {
     public function __construct(
         public int $user_id,
