@@ -32,7 +32,7 @@ class AuthenticationTest extends TestCase
 
     public function test_field_email_should_be_required_to_register_new_user(){
         $mock_data = [
-            "username" => "mock_username",
+            "username" => "mockusername",
             "password" => "mock_password"
         ];
         $response = $this->post($this->base_route . "register", $mock_data);
@@ -44,7 +44,7 @@ class AuthenticationTest extends TestCase
 
     public function test_password_password_should_be_required_to_register_new_user(){
         $mock_data = [
-            "username" => "mock_username",
+            "username" => "mockusername",
             "email" => "mockmail@gmail.com"
         ];
         $response = $this->post($this->base_route . "register", $mock_data);
@@ -53,4 +53,19 @@ class AuthenticationTest extends TestCase
                 "password" => ["The password field is required."]
             ]);
     }
+
+    public function test_should_register_a_new_user(){
+        $mock_data = [
+            "username" => "mockusername",
+            "email" => "mockmail@gmail.com",
+            "password" => "mock_password"
+        ];
+        $response = $this->post($this->base_route . "register", $mock_data);
+        $response->assertStatus(200);
+        $this->assertDatabaseHas('users', [
+            "username" => "mockusername",
+            "email" => "mockmail@gmail.com"
+        ]);
+    }
+
 }
