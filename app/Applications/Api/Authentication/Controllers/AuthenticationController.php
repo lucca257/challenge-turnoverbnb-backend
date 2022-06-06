@@ -31,17 +31,7 @@ class AuthenticationController extends Controller
 
     public function login(AuthenticationValidator $validator, LoginUserAction $loginUserAction) : JsonResponse
     {
-        try {
-            $loginCredentials = $loginUserAction->execute($validator->toDTO());
-            return response()->json($loginCredentials);
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => "Something went wrong"
-            ], 500);
-        } catch (\AuthenticationException $e) {
-            return response()->json([
-                'message' => $e->getMessage()
-            ], 401);
-        }
+        $loginCredentials = $loginUserAction->execute($validator->toDTO());
+        return response()->json($loginCredentials);
     }
 }
