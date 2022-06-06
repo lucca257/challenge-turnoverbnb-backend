@@ -18,6 +18,7 @@ Route::controller(DepositController::class)->prefix('deposits')->group(function 
 
 Route::controller(PurchaseController::class)->prefix('purchases')->group(function () {
     Route::any('list', 'index');
+    Route::post('', 'store');
 });
 
 Route::controller(ImageController::class)->prefix('image')->group(function () {
