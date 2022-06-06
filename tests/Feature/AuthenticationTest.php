@@ -2,8 +2,9 @@
 
 namespace Tests\Feature;
 
-
+use App\Domains\Users\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class AuthenticationTest extends TestCase
@@ -68,4 +69,15 @@ class AuthenticationTest extends TestCase
         ]);
     }
 
+    public function test_should_login_user(){
+        $mock_data = [
+            "username" => "mockusername",
+            "password" => Hash::make("passwordmock"),
+            "email" => "mockmail@gmail.com"
+        ];
+        User::factory()->create($mock_data);
+        $mock_data["password"] = "passwordmock";
+        $response = $this->post($this->base_route . "login", $mock_data);
+        $response->assertStatus(200)->assertJsonFragment(["token_type" => "Bearer"]);
+    }
 }
