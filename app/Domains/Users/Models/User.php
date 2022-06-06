@@ -4,8 +4,10 @@ namespace App\Domains\Users\Models;
 
 use App\Domains\Deposits\Models\Deposit;
 use App\Domains\Transaction\Models\Transaction;
+use App\Domains\Transaction\Models\UserBalance;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -28,6 +30,14 @@ class User extends Authenticatable
     public function deposits(): HasMany
     {
         return $this->hasMany(Deposit::class);
+    }
+
+    /**
+     * @return HasOne
+     */
+    public function balance() : HasOne
+    {
+        return $this->hasOne(UserBalance::class);
     }
 
     /**
