@@ -9,6 +9,7 @@ use App\Domains\Transaction\Models\Transaction;
 use App\Domains\Users\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class DepositTest extends TestCase
@@ -38,7 +39,7 @@ class DepositTest extends TestCase
         $user = User::factory()
             ->has(Transaction::factory()->count(2))
             ->create();
-        $this->actingAs($user);
+        $this->actingAs($user, 'sanctum');
         return $user;
     }
     /**
@@ -47,6 +48,7 @@ class DepositTest extends TestCase
      * @return void
      */
     public function test_field_year_should_be_required_on_list_deposits(){
+        $this->mockUser();
         $response = $this->post($this->base_route . "list", [
             'month' => date('m'),
         ]);
@@ -57,6 +59,7 @@ class DepositTest extends TestCase
     }
 
     public function test_field_month_should_be_required_on_list_deposits(){
+        $this->mockUser();
         $response = $this->get($this->base_route . "list", [
             'year' => date('Y')
         ]);

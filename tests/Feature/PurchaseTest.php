@@ -22,6 +22,8 @@ class PurchaseTestTest extends TestCase
     }
 
     public function test_field_year_should_be_required_on_list_purchases(){
+        $user = User::factory()->create();
+        $this->actingAs($user,'sanctum');
         $response = $this->get($this->base_route . 'list', [
             'month' => date('m')
         ]);
@@ -32,6 +34,8 @@ class PurchaseTestTest extends TestCase
     }
 
     public function test_field_month_should_be_required_on_list_purchases(){
+        $user = User::factory()->create();
+        $this->actingAs($user,'sanctum');
         $response = $this->get($this->base_route . 'list', [
             'year' => date('Y')
         ]);
@@ -47,7 +51,7 @@ class PurchaseTestTest extends TestCase
             ->has(Transaction::factory()->count(2))
             ->has(Purchase::factory()->count(2))
             ->create();
-        $this->actingAs($user);
+        $this->actingAs($user, 'sanctum');
 
         $response = $this->post($this->base_route . 'list', [
             'year' => date('Y'),
@@ -60,7 +64,7 @@ class PurchaseTestTest extends TestCase
     public function test_field_amount_is_required_on_create_purchase(): void
     {
         $user = User::factory()->create();
-        $this->actingAs($user);
+        $this->actingAs($user, 'sanctum');
         $response = $this->post($this->base_route,[
             'description' => 'Test',
             'purchase_at' => date('Y-m-d'),
@@ -74,7 +78,7 @@ class PurchaseTestTest extends TestCase
     public function test_field_desciption_is_required_on_create_purchase(): void
     {
         $user = User::factory()->create();
-        $this->actingAs($user);
+        $this->actingAs($user, 'sanctum');
         $response = $this->post($this->base_route,[
             'amount' => '100',
             'purchase_at' => date('Y-m-d'),
@@ -88,7 +92,7 @@ class PurchaseTestTest extends TestCase
     public function test_field_purchase_at_is_required_on_create_purchase(): void
     {
         $user = User::factory()->create();
-        $this->actingAs($user);
+        $this->actingAs($user, 'sanctum');
         $response = $this->post($this->base_route,[
             'amount' => '100',
             'description' => 'Test',
@@ -108,7 +112,7 @@ class PurchaseTestTest extends TestCase
         ];
         $user = User::factory()->create();
         UserBalance::factory()->create();
-        $this->actingAs($user);
+        $this->actingAs($user, 'sanctum');
         $response = $this->post($this->base_route,$mock_data);
         $response->assertStatus(200);
         $this->assertDatabaseHas('purchases', [
@@ -126,7 +130,7 @@ class PurchaseTestTest extends TestCase
         ];
         $user = User::factory()->create();
         $tt = UserBalance::factory()->create();
-        $this->actingAs($user);
+        $this->actingAs($user, 'sanctum');
         $response = $this->post($this->base_route,$mock_data);
         $response->assertStatus(200);
         $this->assertDatabaseHas('transactions', [
@@ -145,7 +149,7 @@ class PurchaseTestTest extends TestCase
         ];
         $user = User::factory()->create();
         UserBalance::factory()->create();
-        $this->actingAs($user);
+        $this->actingAs($user, 'sanctum');
         $response = $this->post($this->base_route,$mock_data);
         $response->assertStatus(200);
         $this->assertDatabaseHas('user_balances', [
@@ -165,7 +169,7 @@ class PurchaseTestTest extends TestCase
         ];
         $user = User::factory()->create();
         UserBalance::factory()->noBalance()->create();
-        $this->actingAs($user);
+        $this->actingAs($user, 'sanctum');
         $response = $this->post($this->base_route,$mock_data);
         $response->assertStatus(422)->assertJson([
             "message" => "User dont have balance enough for it"
