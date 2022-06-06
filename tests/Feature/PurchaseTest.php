@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Domains\Purchases\Models\Purchase;
 use App\Domains\Transaction\Models\Transaction;
+use App\Domains\Transaction\Models\UserBalance;
 use App\Domains\Users\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -69,7 +70,6 @@ class PurchaseTestTest extends TestCase
             ->assertJson([
                 "amount" => ["The amount field is required."],
             ]);
-
     }
 
     public function test_field_desciption_is_required_on_create_purchase(): void
@@ -84,7 +84,6 @@ class PurchaseTestTest extends TestCase
             ->assertJson([
                 "description" => ["The description field is required."],
             ]);
-
     }
 
     public function test_field_purchase_at_is_required_on_create_purchase(): void
@@ -109,6 +108,7 @@ class PurchaseTestTest extends TestCase
             'purchase_at' => date('Y-m-d'),
         ];
         $user = User::factory()->create();
+        UserBalance::factory()->create();
         $this->actingAs($user);
         $response = $this->post($this->base_route,$mock_data);
         $response->assertStatus(200);
@@ -126,6 +126,7 @@ class PurchaseTestTest extends TestCase
             'purchase_at' => date('Y-m-d'),
         ];
         $user = User::factory()->create();
+        UserBalance::factory()->create();
         $this->actingAs($user);
         $response = $this->post($this->base_route,$mock_data);
         $response->assertStatus(200);
@@ -133,6 +134,24 @@ class PurchaseTestTest extends TestCase
             "user_id" => $user->id,
             'amount' => '100',
             'description' => 'Test',
+        ]);
+    }
+
+    public function test_should_update_user_balance_when_create_new_purchase(): void
+    {
+        $mock_data = [
+            'amount' => '100',
+            'description' => 'Test',
+            'purchase_at' => date('Y-m-d'),
+        ];
+        $user = User::factory()->create();
+        UserBalance::factory()->create();
+        $this->actingAs($user);
+        $response = $this->post($this->base_route,$mock_data);
+        $response->assertStatus(200);
+        $this->assertDatabaseHas('user_balances', [
+            "user_id" => $user->id,
+            'total_expenses' => '100',
         ]);
     }
 }

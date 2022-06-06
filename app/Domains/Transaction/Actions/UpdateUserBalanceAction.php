@@ -1,23 +1,31 @@
 <?php
 
-namespace App\Domains\Transactions\Actions;
+namespace App\Domains\Transaction\Actions;
 
-use App\Domains\Transaction\DTOs\TransactionDTO;
 use App\Domains\Transaction\Models\UserBalance;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class UpdateUserBalanceAction
 {
-    public function execute(TransactionDTO $transactionDTO) : UserBalance
+    /**
+     * @param float $amount
+     * @param string $type
+     * @return mixed
+     */
+    public function execute(float $amount, string $type) : mixed
     {
-        return Auth::user()->userBalance()
-            ->when($transactionDTO->type == "purchase", function ($userBalance, $transactionDTO) {
-                $userBalance->decrement('current_balance', $transactionDTO->amount);
-                $userBalance->increment('total_expenses', $transactionDTO->amount);
-            })
-            ->when($transactionDTO->type == "deposit", function ($userBalance, $transactionDTO) {
-                $userBalance->increment('current_balance', $transactionDTO->amount);
-                $userBalance->increment('total_incomes', $transactionDTO->amount);
-            });
+        return DB::transaction(function () use ($amount, $type) {
+            Auth::user()->balance()
+                ->when($type === "expense", function ($user_balance) use ($amount){
+                    $user_balance->decrement('current_balance', $amount);
+                    $user_balance->increment('total_expenses', $amount);
+                })
+                ->when($type === "income", function ($user_balance) use ($amount){
+                    $user_balance->increment('current_balance', $amount);
+                    $user_balance->increment('total_incomes', $amount);
+                }
+            );
+        });
     }
 }
