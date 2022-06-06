@@ -55,7 +55,7 @@ class AuthenticationTest extends TestCase
             ]);
     }
 
-    public function test_should_register_a_new_user(){
+    public function test_should_register_new_user(){
         $mock_data = [
             "username" => "mockusername",
             "email" => "mockmail@gmail.com",
@@ -79,5 +79,19 @@ class AuthenticationTest extends TestCase
         $mock_data["password"] = "passwordmock";
         $response = $this->post($this->base_route . "login", $mock_data);
         $response->assertStatus(200)->assertJsonFragment(["token_type" => "Bearer"]);
+    }
+
+    public function test_should_unauthorized_login_if_password_its_wrong() : void
+    {
+        $mock_data = [
+            "username" => "mockusername",
+            "password" => Hash::make("passwordmock"),
+            "email" => "mockmail@gmail.com"
+        ];
+        User::factory()->create($mock_data);
+        $mock_data["password"] = "wrongpasswordmock";
+        $response = $this->post($this->base_route . "login", $mock_data);
+        $response->assertStatus(401);
+        $this->assertEquals("Unauthorized",$response->json());
     }
 }
