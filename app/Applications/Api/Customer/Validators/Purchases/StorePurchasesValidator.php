@@ -26,7 +26,7 @@ class StorePurchasesValidator extends FormRequest
     public function rules(): array
     {
         return [
-            "amount" => "required|numeric",
+            "amount" => "required|numeric|",
             "description" => "required|string",
             "purchase_at" => "required|date_format:Y-m-d",
         ];

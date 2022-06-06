@@ -21,9 +21,19 @@ class UserBalanceFactory extends Factory
     {
         return [
             "user_id" => $this->faker->randomElement(User::all()),
-            "current_balance" => 0,
-            "total_incomes" => 0,
-            "total_expenses" => 0,
+            "current_balance" => 99999,
+            "total_incomes" => 99999,
+            "total_expenses" => 99999,
         ];
+    }
+
+    public function noBalance(){
+        return $this->state(function (array $attributes) {
+            return [
+                'current_balance' => 0,
+                "total_incomes" => 0,
+                "total_expenses" => 0,
+            ];
+        });
     }
 }

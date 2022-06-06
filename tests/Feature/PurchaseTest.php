@@ -62,7 +62,6 @@ class PurchaseTestTest extends TestCase
         $user = User::factory()->create();
         $this->actingAs($user);
         $response = $this->post($this->base_route,[
-            //'amount' => '100',
             'description' => 'Test',
             'purchase_at' => date('Y-m-d'),
         ]);
@@ -126,7 +125,7 @@ class PurchaseTestTest extends TestCase
             'purchase_at' => date('Y-m-d'),
         ];
         $user = User::factory()->create();
-        UserBalance::factory()->create();
+        $tt = UserBalance::factory()->create();
         $this->actingAs($user);
         $response = $this->post($this->base_route,$mock_data);
         $response->assertStatus(200);
@@ -151,7 +150,25 @@ class PurchaseTestTest extends TestCase
         $response->assertStatus(200);
         $this->assertDatabaseHas('user_balances', [
             "user_id" => $user->id,
-            'total_expenses' => '100',
+            "current_balance" => 99899,
+            "total_incomes" => 99999,
+            "total_expenses" => 100099,
+        ]);
+    }
+
+    public function test_should_not_create_new_purchase_when_user_balance_is_not_enough()
+    {
+        $mock_data = [
+            'amount' => '100',
+            'description' => 'Test',
+            'purchase_at' => date('Y-m-d'),
+        ];
+        $user = User::factory()->create();
+        UserBalance::factory()->noBalance()->create();
+        $this->actingAs($user);
+        $response = $this->post($this->base_route,$mock_data);
+        $response->assertStatus(422)->assertJson([
+            "message" => "User dont have balance enough for it"
         ]);
     }
 }
