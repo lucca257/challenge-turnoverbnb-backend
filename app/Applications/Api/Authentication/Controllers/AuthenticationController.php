@@ -2,15 +2,11 @@
 
 namespace App\Applications\Api\Authentication\Controllers;
 
-
 use App\Applications\Api\Authentication\Validators\AuthenticationValidator;
 use App\Domains\Authentication\Actions\LoginUserAction;
 use App\Domains\Users\Actions\RegisterUserAction;
 use App\Http\Controllers\Controller;
-use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class AuthenticationController extends Controller
 {
