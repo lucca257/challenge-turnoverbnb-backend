@@ -19,4 +19,10 @@ class AdminDepositController extends Controller
         $pending_deposits = Deposit::pending()->with('user')->get();
         return response()->json($pending_deposits);
     }
+
+    public function show(int $deposit_id) : JsonResponse
+    {
+        $deposit = Deposit::find($deposit_id);
+        return response()->json($deposit);
+    }
 }
