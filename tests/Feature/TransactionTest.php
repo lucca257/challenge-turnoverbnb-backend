@@ -20,6 +20,8 @@ class TransactionTest extends TestCase
     }
 
     public function test_field_year_should_be_required_on_list_transactions(){
+        $user = User::factory()->create();
+        $this->actingAs($user,'sanctum');
         $response = $this->get($this->base_route, [
             'month' => '1'
         ]);
@@ -30,6 +32,8 @@ class TransactionTest extends TestCase
     }
 
     public function test_field_month_should_be_required_on_list(){
+        $user = User::factory()->create();
+        $this->actingAs($user,'sanctum');
         $response = $this->get($this->base_route, [
             'year' => date('Y')
         ]);
@@ -44,7 +48,7 @@ class TransactionTest extends TestCase
         $user = User::factory()
             ->has(Transaction::factory()->count(2))
             ->create();
-        $this->actingAs($user);
+        $this->actingAs($user,'sanctum');
 
         $response = $this->post($this->base_route, [
             'year' => date('Y'),

@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CheckRole
 {
@@ -17,9 +18,7 @@ class CheckRole
         if(env('APP_ENV') === 'testing') {
             return $next($request);
         }
-        if (! $request->expectsJson()) {
-            throw new HttpResponseException(response()->json(['message' => 'Unauthenticated.'], 422));
-        }
+
         if ($request->user()->role !== $role) {
             throw new AuthorizationException();
         }
