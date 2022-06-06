@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Builder;
 
 class DepositRepository extends Builder
 {
+    /**
+     * @param ListDepositsDTO $filter
+     * @return $this
+     */
     public function findByFilters(ListDepositsDTO $filter): Self
     {
         return $this->whereYear('created_at', $filter->year)
@@ -15,5 +19,13 @@ class DepositRepository extends Builder
                 return $query->where('status', $filter->status);
             })
             ->orderBy('created_at', 'desc');
+    }
+
+    /**
+     * @return $this
+     */
+    public function pending(): Self
+    {
+        return $this->whereStatus('pending')->orderBy('created_at', 'desc');
     }
 }
