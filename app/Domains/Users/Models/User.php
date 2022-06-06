@@ -3,6 +3,7 @@
 namespace App\Domains\Users\Models;
 
 use App\Domains\Deposits\Models\Deposit;
+use App\Domains\Purchases\Models\Purchase;
 use App\Domains\Transaction\Models\Transaction;
 use App\Domains\Transaction\Models\UserBalance;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -30,6 +31,14 @@ class User extends Authenticatable
     public function deposits(): HasMany
     {
         return $this->hasMany(Deposit::class);
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function purchases(): HasMany
+    {
+        return $this->hasMany(Purchase::class);
     }
 
     /**

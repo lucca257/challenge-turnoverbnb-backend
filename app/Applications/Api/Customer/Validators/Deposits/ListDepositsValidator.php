@@ -42,7 +42,6 @@ class ListDepositsValidator extends FormRequest
 
         if ($this->has('status')) {
             $filter_dto->status = DepositStatusEnum::from($this->input("status"));
-//            dd($filter_dto);
         }
         return $filter_dto;
     }

@@ -2,6 +2,7 @@
 
 use App\Applications\Api\Customer\Controllers\DepositController;
 use App\Applications\Api\Customer\Controllers\ImageController;
+use App\Applications\Api\Customer\Controllers\PurchaseController;
 use App\Applications\Api\Customer\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
 
@@ -13,6 +14,10 @@ Route::controller(DepositController::class)->prefix('deposits')->group(function 
     Route::any('list', 'index');
     Route::get('{deposit_id}', 'show');
     Route::post('', 'store');
+});
+
+Route::controller(PurchaseController::class)->prefix('purchases')->group(function () {
+    Route::any('list', 'index');
 });
 
 Route::controller(ImageController::class)->prefix('image')->group(function () {
