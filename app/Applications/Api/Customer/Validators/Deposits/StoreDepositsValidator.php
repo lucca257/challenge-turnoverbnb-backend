@@ -27,7 +27,7 @@ class StoreDepositsValidator extends FormRequest
     public function rules(): array
     {
         return [
-            "amount" => "required|integer",
+            "amount" => "required|numeric",
             "description" => "required|max:255",
             "image" => "required|image"
         ];
