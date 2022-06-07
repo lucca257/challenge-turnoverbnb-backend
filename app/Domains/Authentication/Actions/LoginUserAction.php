@@ -27,7 +27,7 @@ class LoginUserAction
         $token = $user->createToken('auth_token')->plainTextToken;
         return collect([
             'username' => $user->username,
-            'email' => $user->email,
+            'role' => $user->role,
             'access_token' => $token,
             'token_type' => 'Bearer'
         ]);
