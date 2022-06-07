@@ -2,6 +2,7 @@
 
 namespace App\Applications\Api\Authentication\Controllers;
 
+use App\Applications\Api\Authentication\Validators\RegisterAuthenticationValidator;
 use App\Applications\Api\Authentication\Validators\AuthenticationValidator;
 use App\Domains\Authentication\Actions\LoginUserAction;
 use App\Domains\Users\Actions\RegisterUserAction;
@@ -15,11 +16,13 @@ class AuthenticationController extends Controller
      * @param RegisterUserAction $registerUserAction
      * @return JsonResponse
      */
-    public function register(AuthenticationValidator $validator, RegisterUserAction $registerUserAction) : JsonResponse
+    public function register(RegisterAuthenticationValidator $validator, RegisterUserAction $registerUserAction) : JsonResponse
     {
         $user = $registerUserAction->execute($validator->toDTO());
         $token = $user->createToken('auth_token')->plainTextToken;
         return response()->json([
+            'username' => $user->username,
+            'role' => $user->role,
             'access_token' => $token,
             'token_type' => 'Bearer'
         ]);
