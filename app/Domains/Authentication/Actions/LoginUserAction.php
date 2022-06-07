@@ -19,7 +19,7 @@ class LoginUserAction
      */
     public function execute(AuthenticationDTO $authenticationDTO) : Collection
     {
-        if (!Auth::attempt(get_object_vars($authenticationDTO))) {
+        if (!Auth::attempt(array_filter(get_object_vars($authenticationDTO)))) {
             throw new HttpResponseException(response()->json("Unauthorized", 401));
         }
 

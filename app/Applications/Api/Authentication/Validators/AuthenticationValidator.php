@@ -27,7 +27,7 @@ class AuthenticationValidator extends FormRequest
     {
         return [
             "username" => "required|alpha_num|max:30",
-            "email" => "required|email",
+            "email" => "nullable|email",
             "password" => "required|min:6"
         ];
     }

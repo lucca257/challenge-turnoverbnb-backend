@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 class CreateTransactionAction
 {
-    public function __construct(private UpdateUserBalanceAction $updateUserBalanceAction)
+    public function __construct(private readonly UpdateUserBalanceAction $updateUserBalanceAction)
     {}
 
     /**

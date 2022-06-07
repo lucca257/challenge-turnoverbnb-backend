@@ -31,17 +31,6 @@ class AuthenticationTest extends TestCase
             ]);
     }
 
-    public function test_field_email_should_be_required_to_register_new_user(){
-        $mock_data = [
-            "username" => "mockusername",
-            "password" => "mock_password"
-        ];
-        $response = $this->post($this->base_route . "register", $mock_data);
-        $response->assertStatus(422)
-            ->assertJson([
-                "email" => ["The email field is required."]
-            ]);
-    }
 
     public function test_password_password_should_be_required_to_register_new_user(){
         $mock_data = [

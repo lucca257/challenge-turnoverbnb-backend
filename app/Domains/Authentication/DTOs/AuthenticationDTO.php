@@ -7,6 +7,6 @@ class AuthenticationDTO
     public function __construct(
         public string $username,
         public string $password,
-        public string $email
+        public ?string $email = null
     ) {}
 }
