@@ -26,7 +26,6 @@ class DepositFactory extends Factory
         return [
             "user_id" => $this->faker->randomElement(User::all()),
             "image_id" => $this->faker->randomElement(Image::all()),
-            "transaction_id" => $this->faker->randomElement(Transaction::all()),
             "status" => $status,
             "description" => $this->faker->title,
             "amount" => $this->faker->randomFloat(2, 0, 100),

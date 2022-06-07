@@ -23,7 +23,7 @@ class CreatePurchaseAction
                 'description' => $purchaseDTO->description,
                 'type' => TransactionTypeEnum::EXPENSE->value
             ]);
-            $this->updateUserBalanceAction->execute($purchaseDTO->amount, TransactionTypeEnum::EXPENSE->value);
+            $this->updateUserBalanceAction->execute($purchaseDTO->user_id, $purchaseDTO->amount, TransactionTypeEnum::EXPENSE->value);
             return Purchase::create(get_object_vars($purchaseDTO));
         });
     }

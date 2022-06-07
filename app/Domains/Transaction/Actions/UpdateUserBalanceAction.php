@@ -14,23 +14,24 @@ class UpdateUserBalanceAction
      * @param string $type
      * @return mixed
      */
-    public function execute(float $amount, string $type) : mixed
+    public function execute(string $user_id, float $amount, string $type) : mixed
     {
-        return DB::transaction(function () use ($amount, $type) {
+        return DB::transaction(function () use ($user_id,$amount, $type) {
+            $user_balance = UserBalance::where('user_id', $user_id)->first();
             if($type === "expense"){
-                if(Auth::user()->balance->current_balance <= $amount) {
+                if($user_balance->current_balance <= $amount) {
                     throw new HttpResponseException(response()->json(["message" => "User dont have balance enough for it"], 422));
                 }
-                Auth::user()->balance()->decrement('current_balance', $amount);
-                Auth::user()->balance()->increment('total_expenses', $amount);
+                $user_balance->decrement('current_balance', $amount);
+                $user_balance->increment('total_expenses', $amount);
             }
 
             if($type === "income"){
-                Auth::user()->balance()->increment('current_balance', $amount);
-                Auth::user()->balance()->increment('total_incomes', $amount);
+                $user_balance->increment('current_balance', $amount);
+                $user_balance->increment('total_incomes', $amount);
+                //dd($amount, $user_balance->toArray());
             }
-            return Auth::user()->balance;
+            return $user_balance;
         });
-
     }
 }
