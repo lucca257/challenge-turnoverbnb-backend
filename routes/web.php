@@ -14,5 +14,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return response()->json([
+        'application' => 'BNB BANK',
+        'message' => 'Welcome to the BNB BANK API',
+        'version' => '1.0.0',
+        'author' => 'Pedro Almeida',
+        'github' => 'lucca257'
+    ]);
 });
