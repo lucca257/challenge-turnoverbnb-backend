@@ -47,8 +47,7 @@ class AdminTest extends TestCase
     {
         $deposit = Deposit::where('user_id', $this->user->id)->first();
         $response = $this->get($this->base_route . $deposit->id);
-        $response->assertStatus(200);
-        $this->assertEquals($deposit->toArray(),$response->json());
+        $response->assertStatus(200)->assertJsonFragment($deposit->toArray());
     }
 
     public function test_field_accepted_is_required_on_review_deposit() : void
