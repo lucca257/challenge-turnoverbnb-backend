@@ -15,13 +15,13 @@ class AdminDepositController extends Controller
      */
     public function index(): JsonResponse
     {
-        $pending_deposits = Deposit::pending()->with('user')->get();
+        $pending_deposits = Deposit::pending()->get();
         return response()->json($pending_deposits);
     }
 
     public function show(int $deposit_id) : JsonResponse
     {
-        $deposit = Deposit::find($deposit_id);
+        $deposit = Deposit::with('images','user','user.balance')->find($deposit_id);
         return response()->json($deposit);
     }
 
