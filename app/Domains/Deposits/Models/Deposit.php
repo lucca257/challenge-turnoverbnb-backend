@@ -19,11 +19,11 @@ class Deposit extends Model
     protected $guarded = [];
 
     /**
-     * @return HasMany
+     * @return HasOne
      */
-    public function images() : HasMany
+    public function images() : HasOne
     {
-        return $this->hasMany(Image::class, 'id', 'image_id');
+        return $this->HasOne(Image::class, 'id', 'image_id');
     }
 
     /**

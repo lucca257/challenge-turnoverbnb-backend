@@ -1,6 +1,7 @@
 <?php
 
 use App\Applications\Api\Authentication\Controllers\AuthenticationController;
+use App\Applications\Api\Customer\Controllers\ImageController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,6 +20,6 @@ Route::controller(AuthenticationController::class)->prefix('auth')->group(functi
     Route::post('login', 'login');
 });
 
-//Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//    return $request->user();
-//});
+Route::controller(ImageController::class)->prefix('image')->group(function () {
+    Route::get('{id}', 'show');
+});
