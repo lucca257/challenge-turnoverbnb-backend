@@ -18,6 +18,8 @@ class ImageController extends Controller
      */
     public function show(int $image_id): BinaryFileResponse
     {
+        //todo make action to validate user
+        //todo make action to admin see all images withou validation
         $image = Image::find($image_id);
         return response()->file(Storage::path($image->path));
     }
