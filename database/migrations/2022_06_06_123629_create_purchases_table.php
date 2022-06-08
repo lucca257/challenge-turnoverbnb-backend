@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('description');
             $table->float('amount');
             $table->foreignId('user_id')->constrained();
-            $table->integer('transaction_id')->nullable()->constrained();
+            $table->foreignId('transaction_id')->nullable()->constrained();
             $table->dateTime('purchase_at');
             $table->timestamps();
         });
