@@ -33,7 +33,12 @@ return new class extends Migration
                 "role" => "admin",
             ],
         ]);
-        UserBalance::factory()->create(["user_id" => 1]);
+        UserBalance::create([
+            "user_id" => 1,
+            "current_balance" => 0,
+            "total_incomes" => 0,
+            "total_expenses" => 0,
+        ]);
     }
 
     /**
